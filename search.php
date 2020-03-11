@@ -14,15 +14,34 @@
 
                 <?php
 
-                $query = "SELECT * FROM posts;";
-                $selectAllPosts = mysqli_query($connection, $query);
+                if (isset($_POST['submit'])) {
+                    $search = $_POST['search'];
 
-                while ($row = mysqli_fetch_assoc($selectAllPosts)) {
-                    $postTitle = $row['post_title'];
-                    $postAuthor = $row['post_author'];
-                    $postDate = $row['post_date'];
-                    $postImage = $row['post_image'];
-                    $postContent = $row['post_content'];
+                    $query = "SELECT * FROM posts where post_tags LIKE '%$search%';";
+                    $searchQuery = mysqli_query($connection, $query);
+
+                    if (!$searchQuery) {
+                        die("QUERY FAILED" . mysqli_error($connection));
+                    }
+
+                    $count = mysqli_num_rows($searchQuery);
+
+                    if ($count == 0) {
+                        echo "<h1>No results</h1>";
+                    } elseif ($count == 1) {
+                        echo "<h2>1 result was found</h2>";
+                    } else {
+                        echo "<h2>$count results were found</h2>";
+                    }
+
+                    while ($row = mysqli_fetch_assoc($searchQuery)) {
+                        $postTitle = $row['post_title'];
+                        $postAuthor = $row['post_author'];
+                        $postDate = $row['post_date'];
+                        $postImage = $row['post_image'];
+                        $postContent = $row['post_content'];
+
+
                 ?>
                 <h1 class="page-header">
                     Page Heading
@@ -45,7 +64,7 @@
 
                 <hr>
 
-                <?php } ?>
+                <?php }} ?>
 
                 <!-- Pager -->
                 <ul class="pager">
