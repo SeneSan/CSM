@@ -28,6 +28,10 @@
 
                     if ($count == 0) {
                         echo "<h1>No results</h1>";
+                    } elseif ($count == 1) {
+                        echo "<h2>1 result was found</h2>";
+                    } else {
+                        echo "<h2>$count results were found</h2>";
                     }
 
                     while ($row = mysqli_fetch_assoc($searchQuery)) {
