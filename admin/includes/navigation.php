@@ -49,7 +49,7 @@
                         <a href="#">View all categories</a>
                     </li>
                     <li>
-                        <a href="#">Add category</a>
+                        <a href="categories.php">Add category</a>
                     </li>
                 </ul>
             </li>

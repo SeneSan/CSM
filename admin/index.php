@@ -1,4 +1,7 @@
-<?php include "includes/header.php" ?>
+<?php
+include "includes/header.php";
+include "../includes/db.php";
+?>
 
     <div id="wrapper">
 
@@ -29,4 +32,4 @@
     </div>
     <!-- /#wrapper -->
 
-<?php include "includes/footer.php"; ?>
+<?php include "includes/header.php"; ?>
