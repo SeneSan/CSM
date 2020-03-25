@@ -40,6 +40,7 @@ include "../includes/db.php";
 
                         ?>
 
+                        <!--Add category form-->
                         <form action="" method="post">
                             <div class="form-group">
                                 <label for="cat_title">Add Category</label>
@@ -49,15 +50,17 @@ include "../includes/db.php";
                                 <input class="btn btn-primary" type="submit" name="submit" value="Add Category">
                             </div>
                         </form>
-                    </div>
-                    <!-- Add Category form -->
-
 
                     <?php
-                    $query = "SELECT * FROM categories";
-                    $selectCategoriesSidebar = mysqli_query($connection, $query);
+                    if (isset($_GET['update'])) {
+                        include "includes/update_categories.php";
+                    }
+
                     ?>
 
+                    </div>
+
+                    <!-- View Category table -->
                     <div class="col-xs-6">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -68,6 +71,10 @@ include "../includes/db.php";
                             </thead>
                             <tbody>
                             <?php
+                            // Find all categories query
+                            $query = "SELECT * FROM categories";
+                            $selectCategoriesSidebar = mysqli_query($connection, $query);
+
                             while ($row = mysqli_fetch_assoc($selectCategoriesSidebar)) {
 
                                 $categoryId = $row['cat_id'];
@@ -76,9 +83,31 @@ include "../includes/db.php";
                                 echo "<tr>
                                         <td>$categoryId</td>
                                         <td>$categoryTitle</td>
-                                    </tr>";
+                                        <td><a href='categories.php?delete=$categoryId'>Delete</a></td>
+                                        <td><a href='categories.php?update=$categoryId'>Update</a></td>
+                                      </tr>";
 
-                            }?>
+                            }
+
+                            // Delete query
+
+                            if (isset($_GET['delete'])) {
+                                $deleteID = $_GET['delete'];
+
+                                $deleteQuery = "DELETE FROM cms.categories WHERE cat_id = $deleteID";
+                                $deleteCategory = mysqli_query($connection, $deleteQuery);
+
+                                if (!$deleteQuery) {
+                                    die("QUERY FAILED" . mysqli_error($connection));
+                                }
+
+                                header("Location: categories.php");
+                            }
+
+
+
+
+                            ?>
                             </tbody>
                         </table>
                     </div>
