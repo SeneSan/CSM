@@ -1,6 +1,5 @@
 <?php
-include "includes/admin_header.php";
-include "../includes/db.php";
+include "./includes/admin_header.php";
 ?>
 
 <div id="wrapper">
@@ -23,21 +22,7 @@ include "../includes/db.php";
                     <div class="col-xs-6">
 
                         <?php
-                        if (isset($_POST['submit'])) {
-                            $catTitle = $_POST['cat_title'];
-
-                            if ($catTitle == "" || empty($catTitle)) {
-                                echo "This field should not be empty";
-                            } else {
-                                $insertQuery = "INSERT INTO categories (cat_title) VALUE ('$catTitle')";
-                                $insertConnection = mysqli_query($connection, $insertQuery);
-
-                                if (!$insertConnection) {
-                                    die('QUERY FAILED' . mysqli_error($connection));
-                                }
-                            }
-                        }
-
+                        insertCategories();
                         ?>
 
                         <!--Add category form-->
@@ -52,6 +37,8 @@ include "../includes/db.php";
                         </form>
 
                     <?php
+
+                    // Update and include query and form
                     if (isset($_GET['update'])) {
                         include "includes/update_categories.php";
                     }
@@ -72,41 +59,10 @@ include "../includes/db.php";
                             <tbody>
                             <?php
                             // Find all categories query
-                            $query = "SELECT * FROM categories";
-                            $selectCategoriesSidebar = mysqli_query($connection, $query);
-
-                            while ($row = mysqli_fetch_assoc($selectCategoriesSidebar)) {
-
-                                $categoryId = $row['cat_id'];
-                                $categoryTitle = $row['cat_title'];
-
-                                echo "<tr>
-                                        <td>$categoryId</td>
-                                        <td>$categoryTitle</td>
-                                        <td><a href='categories.php?delete=$categoryId'>Delete</a></td>
-                                        <td><a href='categories.php?update=$categoryId'>Update</a></td>
-                                      </tr>";
-
-                            }
+                            findAllCategories();
 
                             // Delete query
-
-                            if (isset($_GET['delete'])) {
-                                $deleteID = $_GET['delete'];
-
-                                $deleteQuery = "DELETE FROM cms.categories WHERE cat_id = $deleteID";
-                                $deleteCategory = mysqli_query($connection, $deleteQuery);
-
-                                if (!$deleteQuery) {
-                                    die("QUERY FAILED" . mysqli_error($connection));
-                                }
-
-                                header("Location: categories.php");
-                            }
-
-
-
-
+                            deleteCategory();
                             ?>
                             </tbody>
                         </table>
