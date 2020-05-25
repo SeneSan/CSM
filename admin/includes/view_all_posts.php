@@ -37,13 +37,29 @@ while ($row = mysqli_fetch_assoc($selectPosts))
             <td>$postTitle</td>
             <td>$postCategory</td>
             <td>$postStatus</td>
-            <td><img height='50' src='../images/$postImage' alt='image'/></td>
+            <td><img height='50' src='../images/$postImage' alt='No image'/></td>
             <td>$postTags</td>
             <td>$postComments</td>
             <td>$postDate</td>
+            <td><a href='posts.php?source=edit_post&p_id=$postID'>Edit</a></td>
+            <td><a href='posts.php?delete=$postID'>Delete</a></td>
           </tr>";
 }
 ?>
     </tr>
     </tbody>
 </table>
+
+<?php
+if (isset($_GET['delete']))
+{
+    $postID = $_GET['delete'];
+
+    $query = "DELETE FROM posts WHERE post_id = $postID";
+    mysqli_query($connection, $query);
+
+    header('Location: posts.php');
+}
+
+
+?>
