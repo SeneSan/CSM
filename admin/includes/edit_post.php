@@ -7,6 +7,8 @@ if (isset($_GET['p_id']))
     $query = "SELECT * FROM posts WHERE post_id = $p_id";
     $updatePost = mysqli_query($connection, $query);
 
+    confirmQuery($updatePost);
+
     while ($row = mysqli_fetch_assoc($updatePost)) {
 
         $postAuthor = $row['post_author'];
@@ -26,13 +28,11 @@ if (isset($_GET['p_id']))
         $newPostAuthor = $_POST['post_author'];
         $newPostStatus = $_POST['post_status'];
 
-        if (isset($_FILES['image'])) {
-            $newPostImage = $_FILES['image']['name'];
-            $newPostImageTemp = $_FILES['image']['tmp_name'];
-            move_uploaded_file($newPostImageTemp, "../images/$newPostImage");
-        }
-        else
-        {
+        $newPostImage = $_FILES['image']['name'];
+        $newPostImageTemp = $_FILES['image']['tmp_name'];
+        move_uploaded_file($newPostImageTemp, "../images/$newPostImage");
+
+        if (empty($newPostImage)) {
             $newPostImage = $postImage;
         }
 
@@ -40,8 +40,6 @@ if (isset($_GET['p_id']))
         $newPostContent = $_POST['post_content'];
         $newPostDate = date('d-m-y');
         $newPostComments = 4;
-
-
 
         $query = "UPDATE posts SET post_title = '$newPostTitle', post_category_id = '$newPostCategory', post_author = '$newPostAuthor', post_status = '$newPostStatus',
         post_image = '$newPostImage', post_tags = '$newPostTags', post_content = '$newPostContent', post_date = now(), post_comments_count = $postComments 

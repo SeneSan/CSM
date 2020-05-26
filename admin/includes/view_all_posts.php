@@ -24,7 +24,14 @@ while ($row = mysqli_fetch_assoc($selectPosts))
     $postID = $row['post_id'];
     $postAuthor = $row['post_author'];
     $postTitle = $row['post_title'];
-    $postCategory = $row['post_category_id'];
+
+    $queryCategoryName = "SELECT * FROM categories AS c INNER JOIN posts AS p ON cat_id = post_category_id WHERE p.post_id = $postID;";
+    $categoryName = mysqli_query($connection, $queryCategoryName);
+    confirmQuery($categoryName);
+
+    $category = mysqli_fetch_assoc($categoryName);
+    $postCategory = $category['cat_title'];
+
     $postStatus = $row['post_status'];
     $postImage = $row['post_image'];
     $postTags = $row['post_tags'];

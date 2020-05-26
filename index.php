@@ -18,11 +18,12 @@
                 $selectAllPosts = mysqli_query($connection, $query);
 
                 while ($row = mysqli_fetch_assoc($selectAllPosts)) {
+                    $postID = $row['post_id'];
                     $postTitle = $row['post_title'];
                     $postAuthor = $row['post_author'];
                     $postDate = $row['post_date'];
                     $postImage = $row['post_image'];
-                    $postContent = $row['post_content'];
+                    $postContent = substr($row['post_content'],0 , 200);
                 ?>
                 <h1 class="page-header">
                     Page Heading
@@ -31,7 +32,7 @@
 
                 <!-- Blog Post -->
                 <h2>
-                    <a href="#"><?php echo $postTitle; ?></a>
+                    <a href="post.php?postID=<?php echo $postID?>"><?php echo $postTitle; ?></a>
                 </h2>
                 <p class="lead">
                     by <a href="index.php"><?php echo $postAuthor; ?></a>
