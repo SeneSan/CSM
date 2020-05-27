@@ -14,9 +14,12 @@
 
                 <?php
 
-                $query = "SELECT * FROM posts;";
+                $query = "SELECT * FROM posts WHERE post_status = 'Published';";
                 $selectAllPosts = mysqli_query($connection, $query);
 
+
+                if (!empty($selectAllPosts))
+                {
                 while ($row = mysqli_fetch_assoc($selectAllPosts)) {
                     $postID = $row['post_id'];
                     $postTitle = $row['post_title'];
@@ -46,7 +49,7 @@
 
                 <hr>
 
-                <?php } ?>
+                <?php }} else { echo "<h1 class='text-center'>Opps! We found no posts. Come back later.</h1>";} ?>
 
                 <!-- Pager -->
                 <ul class="pager">

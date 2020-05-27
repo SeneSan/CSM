@@ -19,9 +19,11 @@
 
                     $categoryID = $_GET['category'];
 
-                    $query = "SELECT * FROM posts WHERE post_category_id = $categoryID";
+                    $query = "SELECT * FROM posts WHERE post_category_id = $categoryID AND post_status = 'Published'";
                     $selectAllPosts = mysqli_query($connection, $query);
 
+                    if (!empty($selectAllPosts))
+                    {
                     while ($row = mysqli_fetch_assoc($selectAllPosts)) {
                         $postID = $row['post_id'];
                         $postTitle = $row['post_title'];
@@ -29,6 +31,10 @@
                         $postDate = $row['post_date'];
                         $postImage = $row['post_image'];
                         $postContent = substr($row['post_content'],0 , 200);
+                        $postStatus = $row['post_status'];
+
+                        if ($postStatus == 'Published')
+                        {
                     ?>
                     <h1 class="page-header">
                         Page Heading
@@ -51,7 +57,7 @@
 
                     <hr>
 
-                <?php }} ?>
+                <?php }}} else { echo "<h1 class='text-center'>Opps! We found no posts. Come back later.</h1>";}}?>
 
                 <!-- Pager -->
                 <ul class="pager">
